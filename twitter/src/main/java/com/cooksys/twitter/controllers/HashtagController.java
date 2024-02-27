@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.twitter.dtos.HashtagDto;
+import com.cooksys.twitter.services.HashtagService;
 
 import lombok.RequiredArgsConstructor;
 

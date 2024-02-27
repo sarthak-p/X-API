@@ -11,6 +11,6 @@ import com.cooksys.twitter.entities.Hashtag;
 public class HashtagRepository extends JpaRepository<Hashtag, Long> {
     Optional<Hashtag> findById(Long hashtagId);
 
-    Optional<Hashtag> findHashtagByLabel(String label);
+    Optional<Hashtag> findByLabel(String label);
 
 }
