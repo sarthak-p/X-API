@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class HashtagServiceImpl {
+public class HashtagServiceImpl implements HashtagService {
     private HashtagRepository hashtagRepository;
     private final HashtagMapper hashtagMapper;
 

@@ -4,6 +4,6 @@ import java.util.List;
 
 import com.cooksys.twitter.dtos.HashtagDto;
 
-public class HashtagService {
+public interface HashtagService {
     public List<HashtagDto> getAllHashtags();
 }

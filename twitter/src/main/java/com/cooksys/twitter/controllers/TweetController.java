@@ -1,6 +1,8 @@
 package com.cooksys.twitter.controllers;
 
 import com.cooksys.twitter.dtos.TweetDto;
+import com.cooksys.twitter.dtos.TweetResponseDto;
+import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.services.TweetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,4 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TweetController {
     private final TweetService tweetService;
+
+    @GetMapping
+    public List<TweetResponseDto> getAllTweets(){
+        return tweetService.getAllTweets();
+    }
 }

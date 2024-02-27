@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.cooksys.twitter.entities.Hashtag;
 
 @Repository
-public class HashtagRepository extends JpaRepository<Hashtag, Long> {
+public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
     Optional<Hashtag> findById(Long hashtagId);
 
     Optional<Hashtag> findByLabel(String label);

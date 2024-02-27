@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -16,10 +17,6 @@ public class Tweet {
     @Id
     @GeneratedValue
     private Long id;
-
-    // @Column(nullable = false)
-    // @ManyToOne(mappedBy = "tweet")
-    // private User user;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -35,13 +32,17 @@ public class Tweet {
     @ManyToOne
     private Tweet repostOf;
 
-//    @OneToMany(mappedBy = "tweet")
-//    private List<User> user_likes;
-//
-//    @OneToMany(mappedBy = "tweet")
-//    private List<User> user_mentions;
-//
-//    @OneToMany(mappedBy = "tweet")
-//    private List<Hashtag> tweet_hashtags;
+    @Column(nullable = false)
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "tweet")
+    private List<User> user_likes;
+
+    @OneToMany(mappedBy = "tweet")
+    private List<User> user_mentions;
+
+    @OneToMany(mappedBy = "tweet")
+    private List<Hashtag> tweet_hashtags;
 
 }
