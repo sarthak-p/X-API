@@ -34,15 +34,15 @@ public class Tweet {
 
     @Column(nullable = false)
     @ManyToOne
-    private User user;
+    private User author;
 
     @OneToMany(mappedBy = "tweet")
     private List<User> user_likes;
 
     @OneToMany(mappedBy = "tweet")
-    private List<User> user_mentions;
+    private List<User> mentionedUsers;
 
     @OneToMany(mappedBy = "tweet")
-    private List<Hashtag> tweet_hashtags;
+    private List<Hashtag> hashtags;
 
 }

@@ -1,6 +1,5 @@
 package com.cooksys.twitter.mappers;
 
-import com.cooksys.twitter.dtos.TweetDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.entities.Tweet;
@@ -11,8 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface TweetMapper {
     Tweet requestDtoToEntity(TweetRequestDto TweetRequestDto);
-
-    Tweet TweetDtoToEntity(TweetDto TweetDto);
 
     TweetResponseDto entityToResponseDto(Tweet tweet);
 
