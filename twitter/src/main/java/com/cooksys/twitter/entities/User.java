@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name="user_table")
@@ -35,4 +36,19 @@ public class User {
             @AttributeOverride( name = "email", column = @Column(name = "email", nullable = false)),
             @AttributeOverride( name = "phone", column = @Column(name = "phone"))})
     private Profile profile;
+
+    @OneToMany(mappedBy = "user")
+    private List<User> following;
+
+    @OneToMany(mappedBy = "user")
+    private List<User> followers;
+
+    @OneToMany(mappedBy = "user")
+    private List<User> mentionedUsers;
+
+    @OneToMany(mappedBy = "user")
+    private List<Tweet> tweets;
+
+    @OneToMany(mappedBy = "user")
+    private List<Tweet> likedTweets;
 }
