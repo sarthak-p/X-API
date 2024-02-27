@@ -1,9 +1,9 @@
-package com.cooksys.socialmedia;
+package com.cooksys.twitter;
 
-import com.cooksys.socialmedia.entities.*;
-import com.cooksys.socialmedia.repositories.HashtagRepository;
-import com.cooksys.socialmedia.repositories.TweetRepository;
-import com.cooksys.socialmedia.repositories.UserRepository;
+import com.cooksys.twitter.entities.*;
+import com.cooksys.twitter.repositories.HashtagRepository;
+import com.cooksys.twitter.repositories.TweetRepository;
+import com.cooksys.twitter.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
