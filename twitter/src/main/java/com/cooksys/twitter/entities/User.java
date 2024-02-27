@@ -32,7 +32,7 @@ public class User {
     @AttributeOverrides({
             @AttributeOverride( name = "firstName", column = @Column(name = "first_name")),
             @AttributeOverride( name = "lastName", column = @Column(name = "last_name")),
-            @AttributeOverride( name = "email", column = @Column(name = "email")),
+            @AttributeOverride( name = "email", column = @Column(name = "email", nullable = false)),
             @AttributeOverride( name = "phone", column = @Column(name = "phone"))})
     private Profile profile;
 }
