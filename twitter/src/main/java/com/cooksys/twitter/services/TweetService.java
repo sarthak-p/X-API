@@ -1,4 +1,4 @@
 package com.cooksys.twitter.services;
 
-public class TweetService {
+public interface TweetService {
 }

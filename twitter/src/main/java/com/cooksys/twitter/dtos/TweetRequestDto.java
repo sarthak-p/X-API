@@ -3,15 +3,9 @@ package com.cooksys.twitter.dtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @NoArgsConstructor
 @Data
-public class TweetResponseDto {
-
-    private Long id;
-
-    private Timestamp posted;
+public class TweetRequestDto {
 
     private String content;
 
