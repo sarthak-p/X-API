@@ -10,12 +10,14 @@ import java.sql.Timestamp;
 public class TweetResponseDto {
 
     private Long id;
+    
+    private UserResponseDto author;
 
     private Timestamp posted;
 
     private String content;
 
-    private Long inReplyToId;
+    private TweetResponseDto inReplyToId;
 
-    private Long repostOfId;
+    private TweetResponseDto repostOfId;
 }

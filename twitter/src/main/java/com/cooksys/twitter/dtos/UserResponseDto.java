@@ -1,11 +1,14 @@
 package com.cooksys.twitter.dtos;
 
+import java.sql.Timestamp;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
 public class UserResponseDto {
-    private Long id;
     private String username;
+    private ProfileDto profile;
+    private Timestamp joined;
 }
