@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ValidateServiceImpl implements ValidateService {
     private final HashtagRepository hashtagRepository;
-    // private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public boolean hashtagExists(String label) {
@@ -26,6 +26,13 @@ public class ValidateServiceImpl implements ValidateService {
 
     @Override
     public boolean usernameExists(String username) {
-        return true;
+        Optional<User> usernameOptional = userRepository.findByUsername(username);
+        return usernameOptional.isPresent();
     }
+
+    @Override
+    public boolean usernameAvailable(String username) {
+        return !usernameExists(username);
+    }
+
 }
