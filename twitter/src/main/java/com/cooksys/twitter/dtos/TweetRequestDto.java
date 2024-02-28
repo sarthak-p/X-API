@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TweetRequestDto {
 
-	private String content;
+  private String content;
 
   private CredentialsDto credentials;
 }

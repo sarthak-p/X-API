@@ -14,26 +14,23 @@ import com.cooksys.twitter.services.ValidateService;
 @RequestMapping("/validate")
 @AllArgsConstructor
 public class ValidateController {
+
     private final ValidateService validateService;
 
-    // check whether a given hashtag exits
+    // Checks whether a given hashtag exists.
     @GetMapping("/tag/exists/{label}")
-    public ResponseEntity<Boolean> hashtagExists(@PathVariable String label) {
-        boolean exists = validateService.hashtagExists(label);
-        return ResponseEntity.ok(exists);
+    public Boolean hashtagExists(@PathVariable String label) {
+        return validateService.hashtagExists(label);
     }
 
-    // check whether a given username exists
-    @GetMapping("/username/exists/@{username}")
-    public ResponseEntity<Boolean> usernameExists(@PathVariable String username) {
-        boolean exists = validateService.usernameExists(username);
-        return ResponseEntity.ok(exists);
+    @GetMapping("/username/available@{username}")
+    public boolean usernameExists(@PathVariable String username) {
+        return validateService.usernameExists(username);
     }
 
-    // check whether a given username is
+    // Check whether a given username is available
     @GetMapping("/username/available/{username}")
-    public ResponseEntity<Boolean> usernameAvailable(@PathVariable String username) {
-        boolean available = validateService.usernameAvailable(username);
-        return ResponseEntity.ok(available);
+    public Boolean usernameAvailable(@PathVariable String username) {
+        return validateService.usernameAvailable(username);
     }
 }

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class TweetResponseDto {
 
     private Long id;
-    
+
     private UserResponseDto author;
 
     private Timestamp posted;
