@@ -2,6 +2,7 @@ package com.cooksys.twitter.entities;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,6 +43,6 @@ public class Hashtag {
     @JsonManagedReference
     @ManyToMany(mappedBy = "hashtags")
     @JsonIgnoreProperties("hashtags")
-    private List<Tweet> tweets;
+    private List<Tweet> tweets = new ArrayList<>();
 
 }

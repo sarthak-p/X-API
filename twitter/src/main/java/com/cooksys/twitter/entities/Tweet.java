@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ import java.util.List;
 public class Tweet {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, updatable = false)
@@ -27,22 +28,34 @@ public class Tweet {
     private boolean deleted;
 
     @ManyToOne
+    @JoinColumn
+    private User author;
+
+    @ManyToOne
+    @JoinColumn
     private Tweet inReplyTo;
 
     @ManyToOne
+    @JoinColumn
     private Tweet repostOf;
 
-    @Column(nullable = false)
-    @ManyToOne
-    private User author;
+    @ManyToMany
+    @JoinTable(
+            name = "tweet_user_likes",
+            joinColumns = @JoinColumn(name = "tweet_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> user_likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tweet")
-    private List<User> user_likes;
+    @ManyToMany(mappedBy = "mentionedInTweets")
+    private List<User> mentionedUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tweet")
-    private List<User> mentionedUsers;
-
-    @OneToMany(mappedBy = "tweet")
-    private List<Hashtag> hashtags;
+    @ManyToMany
+    @JoinTable(
+            name = "tweet_hashtags",
+            joinColumns = @JoinColumn(name = "tweet_id"),
+            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
+    )
+    private List<Hashtag> hashtags = new ArrayList<>();
 
 }

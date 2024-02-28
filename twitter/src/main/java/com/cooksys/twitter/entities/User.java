@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,18 +39,28 @@ public class User {
             @AttributeOverride( name = "phone", column = @Column(name = "phone"))})
     private Profile profile;
 
-    @OneToMany(mappedBy = "user")
-    private List<User> following;
+    @ManyToMany
+    @JoinTable(
+            name = "user_following",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id")
+    )
+    private List<User> following = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<User> followers;
+    @ManyToMany(mappedBy = "following")
+    private List<User> followers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<User> mentionedUsers;
+    @ManyToMany
+    @JoinTable(
+            name = "tweet_mentioned_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tweet_id")
+    )
+    private List<Tweet> mentionedInTweets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Tweet> tweets;
+    @OneToMany(mappedBy = "author")
+    private List<Tweet> tweets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Tweet> likedTweets;
+    @ManyToMany(mappedBy = "user_likes")
+    private List<Tweet> likedTweets = new ArrayList<>();
 }
