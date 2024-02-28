@@ -39,6 +39,12 @@ public class Tweet {
     @JoinColumn
     private Tweet repostOf;
 
+    @OneToMany(mappedBy = "inReplyTo")
+    private List<Tweet> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "repostOf")
+    private List<Tweet> reposts = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "tweet_user_likes",

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRequestDto {
 
-    private Credentials credentials;
-    private Profile profile;
+    private CredentialsDto credentials;
+    private ProfileDto profile;
 }
