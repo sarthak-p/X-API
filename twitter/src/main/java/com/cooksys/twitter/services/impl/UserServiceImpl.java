@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -72,15 +73,21 @@ public class UserServiceImpl implements UserService {
             }
         }
         User userToCreate = new User();
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
         userToCreate.setCredentials(credentialsMapper.dtoToEntity(userRequestDto.getCredentials()));
         userToCreate.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
-        userToCreate.setTimeStamp(timestamp);
-
-        UserResponseDto userResponseDto = userMapper.entityToResponseDto(userToCreate);
-        userResponseDto.setJoined(timestamp);
         userRepository.saveAndFlush(userToCreate);
-        return userResponseDto;
+
+        return userMapper.entityToResponseDto(userToCreate);
+    }
+
+    @Override
+    public UserResponseDto getUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByCredentials_Username(username);
+        if(!validateService.usernameExists(username) || optionalUser.get().isDeleted()){
+            throw new NotFoundException("Username not found");
+        }
+        System.out.println(optionalUser.get().getJoined());
+        return userMapper.entityToResponseDto(optionalUser.get());
     }
 
 }
