@@ -131,6 +131,38 @@ public class TweetServiceImpl implements TweetService {
 		return userMapper.entitiesToResponseDtos(nonDeletedUsers);
 	}
 
+	@Override
+	public List<TweetResponseDto> getRepliesByTweetId(Long id) {
+		// check if the tweet exists and if it's deleted
+		Tweet tweet = getTweet(id);
+		// only return non-deleted replies
+		List<Tweet> nonDeletedReplies = new ArrayList<>();
+		for (Tweet t : tweet.getReplies()) {
+			if (!t.isDeleted()) {
+				nonDeletedReplies.add(t);
+			}
+		}
+		return tweetMapper.entitiesToResponseDtos(nonDeletedReplies);
+	}
+
+	@Override
+	public List<TweetResponseDto> getRepostsByTweetId(Long id) {
+		// check if the tweet exists and if it's deleted
+		Tweet tweet = getTweet(id);
+		// only return non-deleted replies
+		List<Tweet> nonDeletedReposts = new ArrayList<>();
+		for (Tweet t : tweet.getReposts()) {
+			if (!t.isDeleted()) {
+				nonDeletedReposts.add(t);
+			}
+		}
+		// set content of repost to tweet they retweeted
+		for (Tweet repost : nonDeletedReposts) {
+			repost.setContent(tweet.getContent());
+		}
+		return tweetMapper.entitiesToResponseDtos(nonDeletedReposts);
+	}
+
 	// POST
 	// ----------
 	@Override
@@ -161,9 +193,12 @@ public class TweetServiceImpl implements TweetService {
 		}
 		// create like relationship between user and tweet
 		User userToLikeTweet = userRepository.findByCredentials_Username(credentialsDto.getUsername()).get();
-		userToLikeTweet.getLikedTweets().add(tweetToLike);
-		tweetToLike.getUser_likes().add(userToLikeTweet);
-
+		if (!userToLikeTweet.getLikedTweets().contains(tweetToLike)) {
+			userToLikeTweet.getLikedTweets().add(tweetToLike);
+		}
+		if (!tweetToLike.getUser_likes().contains(userToLikeTweet)) {
+			tweetToLike.getUser_likes().add(userToLikeTweet);
+		}
 		// save to database
 		userRepository.saveAndFlush(userToLikeTweet);
 		tweetRepository.saveAndFlush(tweetToLike);

@@ -44,6 +44,16 @@ public class TweetController {
     public List<UserResponseDto> getUserLikesByTweetId(@PathVariable Long id) {
     	return tweetService.getUserLikesByTweetId(id);
     }
+    
+    @GetMapping("/{id}/replies")
+    public List<TweetResponseDto> getRepliesByTweetId(@PathVariable Long id) {
+    	return tweetService.getRepliesByTweetId(id);
+    }
+    
+    @GetMapping("/{id}/reposts")
+    public List<TweetResponseDto> getRepostsByTweetId(@PathVariable Long id) {
+    	return tweetService.getRepostsByTweetId(id);
+    }
 
     @PostMapping
     public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {
