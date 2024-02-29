@@ -1,9 +1,9 @@
 package com.cooksys.twitter.controllers;
 
-import com.cooksys.twitter.dtos.CredentialsDto;
-import com.cooksys.twitter.dtos.ProfileDto;
+
 import com.cooksys.twitter.dtos.UserRequestDto;
 import com.cooksys.twitter.dtos.UserResponseDto;
+import com.cooksys.twitter.repositories.UserRepository;
 import com.cooksys.twitter.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
+    private final UserRepository userRepository;
 
     @GetMapping
     public List<UserResponseDto> getAllUsers(){
@@ -24,6 +25,10 @@ public class UserController {
     @PostMapping
     public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto){
         return userService.createUser(userRequestDto);
+    }
+    @GetMapping("@{username}")
+    public UserResponseDto getUserByUsername(@PathVariable String username){
+        return userService.getUserByUsername(username);
     }
 
 }
