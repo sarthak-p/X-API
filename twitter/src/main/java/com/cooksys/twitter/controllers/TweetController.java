@@ -1,11 +1,10 @@
 package com.cooksys.twitter.controllers;
 
+import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.services.TweetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,5 +17,10 @@ public class TweetController {
     @GetMapping
     public List<TweetResponseDto> getAllTweets(){
         return tweetService.getAllTweets();
+    }
+
+    @PostMapping
+    public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {
+        return tweetService.createTweet(tweetRequestDto);
     }
 }
