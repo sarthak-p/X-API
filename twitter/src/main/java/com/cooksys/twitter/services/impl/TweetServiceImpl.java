@@ -3,6 +3,7 @@ package com.cooksys.twitter.services.impl;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,7 +76,20 @@ public class TweetServiceImpl implements TweetService {
             throw new BadRequestException("Username or password cannot be null");
         }
     }
-
+	
+	private Tweet getTweet(Long id) {
+		Optional<Tweet> tweetById = tweetRepository.findByIdAndDeletedFalse(id);
+		if (!tweetById.isPresent()) {
+			throw new BadRequestException("No such tweet exists");
+		} else if (tweetById.get().isDeleted()) {
+			throw new BadRequestException("Tweet is deleted");
+		}
+		return tweetById.get();
+	}
+	
+	// GET
+	//----------
+	
 	@Override
 	public List<TweetResponseDto> getAllTweets() {
 		List<TweetResponseDto> allTweets = tweetMapper.entitiesToResponseDtos(tweetRepository.findAllByDeletedFalse());
@@ -85,7 +99,14 @@ public class TweetServiceImpl implements TweetService {
 		allTweets.sort(Comparator.comparing(TweetResponseDto::getPosted).reversed());
 		return allTweets;
 	}
-
+	
+	@Override
+	public TweetResponseDto getTweetById(Long id) {
+		return tweetMapper.entityToResponseDto(getTweet(id));
+	}
+	
+	// POST
+	//----------
 	@Override
 	public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
 		validateTweet(tweetRequestDto);
