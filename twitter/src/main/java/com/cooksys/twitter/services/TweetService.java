@@ -18,4 +18,6 @@ public interface TweetService {
 	void createLike(CredentialsDto credentialsDto, Long id);
 
 	TweetResponseDto createReplyTweet(TweetRequestDto tweetRequestDto, Long id);
+
+	TweetResponseDto createRepostTweet(CredentialsDto credentialsDto, Long id);
 }

@@ -48,6 +48,11 @@ public class TweetController {
     	return tweetService.createReplyTweet(tweetRequestDto, id);
     }
     
+    @PostMapping("/{id}/repost")
+    public TweetResponseDto createRepostTweet(@RequestBody CredentialsDto credentialsDto, @PathVariable Long id) {
+    	return tweetService.createRepostTweet(credentialsDto, id);
+    }
+    
     @DeleteMapping("/{id}")
     public TweetResponseDto deleteTweet(@RequestBody CredentialsDto credentialsDto, @PathVariable Long id) {
     	return tweetService.deleteTweet(credentialsDto, id);

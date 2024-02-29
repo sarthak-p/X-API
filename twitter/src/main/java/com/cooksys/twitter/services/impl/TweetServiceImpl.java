@@ -163,8 +163,29 @@ public class TweetServiceImpl implements TweetService {
 		replyTweet.setInReplyTo(tweetToReplyTo);
 		tweetToReplyTo.getReplies().add(replyTweet);
 		// save to database
+		tweetRepository.saveAndFlush(replyTweet);
 		tweetRepository.saveAndFlush(tweetToReplyTo);
-		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(replyTweet));
+		return tweetMapper.entityToResponseDto(replyTweet);
+	}
+
+	@Override
+	public TweetResponseDto createRepostTweet(CredentialsDto credentialsDto, Long id) {
+		// if tweet is deleted or doesn't exist or credentials don't match user in db
+		Tweet givenTweet = getTweet(id);
+		if (userRepository.findByCredentials_Username(credentialsDto.getUsername()).get() == null) {
+			throw new BadRequestException("User doesn't exist in the database");
+		}
+		// create reply tweet
+		Tweet repostOfGivenTweet = new Tweet();
+		repostOfGivenTweet.setDeleted(false);
+		repostOfGivenTweet.setAuthor(userRepository.findByCredentials_Username(credentialsDto.getUsername()).get());
+		// add reply to relationship
+		repostOfGivenTweet.setRepostOf(givenTweet);
+		givenTweet.getReposts().add(repostOfGivenTweet);
+		// save to database
+		tweetRepository.saveAndFlush(repostOfGivenTweet);
+		tweetRepository.saveAndFlush(givenTweet);
+		return tweetMapper.entityToResponseDto(repostOfGivenTweet);
 	}
 
 	// DELETE
@@ -182,4 +203,5 @@ public class TweetServiceImpl implements TweetService {
 		tweetToDelete.setDeleted(true);
 		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(tweetToDelete));
 	}
+
 }
