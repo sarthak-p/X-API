@@ -8,28 +8,32 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
+import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.entities.Hashtag;
 import com.cooksys.twitter.entities.Tweet;
 import com.cooksys.twitter.entities.User;
+import com.cooksys.twitter.exceptions.BadRequestException;
 import com.cooksys.twitter.exceptions.NotFoundException;
 import com.cooksys.twitter.mappers.TweetMapper;
+import com.cooksys.twitter.repositories.HashtagRepository;
 import com.cooksys.twitter.repositories.TweetRepository;
 import com.cooksys.twitter.repositories.UserRepository;
 import com.cooksys.twitter.services.TweetService;
 import com.cooksys.twitter.services.ValidateService;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TweetServiceImpl implements TweetService {
 	private final TweetRepository tweetRepository;
 	private final UserRepository userRepository;
+	private final HashtagRepository hashtagRepository;
 	private final TweetMapper tweetMapper;
 	private ValidateService validateService;
-	
+
 	// processes content for hashtags
 	private List<Hashtag> processTweetForTags(String tweetContent) {
 		String hashtagPattern = "#+[a-zA-Z0-9(_)]{1,}";
@@ -40,10 +44,12 @@ public class TweetServiceImpl implements TweetService {
 			Hashtag hashtagInTweet = new Hashtag();
 			hashtagInTweet.setLabel(matcher.group());
 			tagsInContent.add(hashtagInTweet);
+			hashtagRepository.saveAndFlush(hashtagInTweet);
 		}
 		return tagsInContent;
 	}
 	
+
 	// processes content for user mentions
 	private List<User> processTweetForUsers(String tweetContent) {
 		String userPattern = "@+[a-zA-Z0-9(_)]{1,}";
@@ -52,11 +58,23 @@ public class TweetServiceImpl implements TweetService {
 		List<User> usersInContent = new ArrayList<>();
 		while (matcher.find()) {
 			User userInContent = new User();
-			userInContent.getCredentials().setUsername(matcher.group());
+			userInContent = userRepository.findByCredentials_Username(matcher.group().substring(1)).get();
 			usersInContent.add(userInContent);
 		}
 		return usersInContent;
 	}
+	
+	private void validateTweet(TweetRequestDto tweetRequestDto){
+        CredentialsDto credentialsDtoToCreate = tweetRequestDto.getCredentials();
+        String contentToCreate = tweetRequestDto.getContent();
+        if (credentialsDtoToCreate == null || contentToCreate == null){
+            throw new BadRequestException("Content or Credentials cannot be null");
+        } else if (!validateService.usernameExists(credentialsDtoToCreate.getUsername())) {
+            throw new BadRequestException("User doesn't exist in the database");
+        } else if(credentialsDtoToCreate.getUsername() == null || credentialsDtoToCreate.getPassword() == null){
+            throw new BadRequestException("Username or password cannot be null");
+        }
+    }
 
 	@Override
 	public List<TweetResponseDto> getAllTweets() {
@@ -70,10 +88,7 @@ public class TweetServiceImpl implements TweetService {
 
 	@Override
 	public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
-		// check if given credentials match user in the db
-		if (!validateService.usernameExists(tweetRequestDto.getCredentials().getUsername())) {
-			throw new NotFoundException("User not found");
-		}
+		validateTweet(tweetRequestDto);
 
 		// Create new tweet
 		Tweet createdTweet = new Tweet();
