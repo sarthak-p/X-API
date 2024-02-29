@@ -28,7 +28,7 @@ public class User {
     private Credentials credentials;
 
     @CreationTimestamp
-    private Timestamp timeStamp;
+    private Timestamp joined;
     private boolean deleted;
 
     @Embedded
