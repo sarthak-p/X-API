@@ -33,8 +33,13 @@ public class UserController {
     }
 
     @DeleteMapping("@{username}")
-    public UserResponseDto deleteUser(@PathVariable String username, CredentialsDto credentialsDto){
+    public UserResponseDto deleteUser(@PathVariable String username, @RequestBody CredentialsDto credentialsDto){
         return userService.deleteUser(username, credentialsDto);
+    }
+
+    @PatchMapping("@{username}")
+    public UserResponseDto updateUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto){
+        return userService.updateUser(username, userRequestDto);
     }
 
 }
