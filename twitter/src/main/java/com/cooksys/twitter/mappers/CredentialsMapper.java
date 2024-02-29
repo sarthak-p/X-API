@@ -13,7 +13,7 @@ import org.mapstruct.Mapper;
 public interface CredentialsMapper {
     CredentialsDto entityToDto(Credentials credentials);
 
-    Profile dtoToEntity(CredentialsDto credentialsDto);
+    Credentials dtoToEntity(CredentialsDto credentialsDto);
 
     List<CredentialsDto> entitiesToDtos(List<Credentials> credentials);
 }
