@@ -13,7 +13,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class })
 public interface UserMapper {
-  // @Mapping(target = "username", source = "user.credentials.username")
+  @Mapping(target = "username", source = "credentials.username")
   UserResponseDto entityToResponseDto(User user);
 
   User requestDtoToEntity(UserRequestDto userRequestDto);
