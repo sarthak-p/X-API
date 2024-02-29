@@ -1,6 +1,7 @@
 package com.cooksys.twitter.controllers;
 
 
+import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.UserRequestDto;
 import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.repositories.UserRepository;
@@ -29,6 +30,11 @@ public class UserController {
     @GetMapping("@{username}")
     public UserResponseDto getUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
+    }
+
+    @DeleteMapping("@{username}")
+    public UserResponseDto deleteUser(@PathVariable String username, CredentialsDto credentialsDto){
+        return userService.deleteUser(username, credentialsDto);
     }
 
 }
