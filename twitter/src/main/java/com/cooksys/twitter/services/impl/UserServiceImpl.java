@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.swing.text.html.Option;
 import java.sql.Timestamp;
@@ -109,6 +110,22 @@ public class UserServiceImpl implements UserService {
         User userToDelete = optionalUser.get();
         userToDelete.setDeleted(true);
         return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToDelete));
+    }
+
+    @Override
+    public UserResponseDto updateUser(String username, UserRequestDto userRequestDto) {
+        Optional<User> userToUpdate = userRepository.findByCredentials_Username(username);
+        if(!validateService.usernameExists(username) || userToUpdate.isPresent() && userToUpdate.get().isDeleted()){
+            throw new BadRequestException("This user does not exist");
+        } else if(userRequestDto.getCredentials() == null || userRequestDto.getProfile() == null){
+            throw new BadRequestException("Credentials should not be null");
+        }else if (!userRequestDto.getCredentials().equals(credentialsMapper.entityToDto(userToUpdate.get().getCredentials()))){
+            throw new BadRequestException("Invalid information");
+        }
+        if (ObjectUtils.isEmpty(userRequestDto.getProfile())) {
+            userToUpdate.get().setCredentials(credentialsMapper.dtoToEntity(userRequestDto.getCredentials()));
+        }
+        return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToUpdate.get()));
     }
 
 }
