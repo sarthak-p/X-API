@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.twitter.dtos.CredentialsDto;
+import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.entities.Hashtag;
@@ -17,6 +18,7 @@ import com.cooksys.twitter.entities.Tweet;
 import com.cooksys.twitter.entities.User;
 import com.cooksys.twitter.exceptions.BadRequestException;
 import com.cooksys.twitter.exceptions.NotFoundException;
+import com.cooksys.twitter.mappers.HashtagMapper;
 import com.cooksys.twitter.mappers.TweetMapper;
 import com.cooksys.twitter.repositories.HashtagRepository;
 import com.cooksys.twitter.repositories.TweetRepository;
@@ -33,6 +35,7 @@ public class TweetServiceImpl implements TweetService {
 	private final UserRepository userRepository;
 	private final HashtagRepository hashtagRepository;
 	private final TweetMapper tweetMapper;
+	private final HashtagMapper hashtagMapper;
 	private ValidateService validateService;
 
 	// processes content for hashtags
@@ -43,7 +46,7 @@ public class TweetServiceImpl implements TweetService {
 		List<Hashtag> tagsInContent = new ArrayList<>();
 		while (matcher.find()) {
 			Hashtag hashtagInTweet = new Hashtag();
-			hashtagInTweet.setLabel(matcher.group());
+			hashtagInTweet.setLabel(matcher.group().substring(1));
 			tagsInContent.add(hashtagInTweet);
 			hashtagRepository.saveAndFlush(hashtagInTweet);
 		}
@@ -102,6 +105,13 @@ public class TweetServiceImpl implements TweetService {
 	@Override
 	public TweetResponseDto getTweetById(Long id) {
 		return tweetMapper.entityToResponseDto(getTweet(id));
+	}
+	
+	@Override
+	public List<HashtagDto> getTagsByTweetId(Long id) {
+		// check if the tweet exists and if it's deleted
+		Tweet tweet = getTweet(id);
+		return hashtagMapper.entitiesToDtos(tweet.getHashtags());
 	}
 
 	// POST
