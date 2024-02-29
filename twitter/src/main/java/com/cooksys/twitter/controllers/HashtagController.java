@@ -17,9 +17,11 @@ import lombok.RequiredArgsConstructor;
 public class HashtagController {
     private final HashtagService hashtagService;
 
-    // get all hashtags
     @GetMapping
     public List<HashtagDto> getAllHashtags() {
         return hashtagService.getAllHashtags();
     }
+
+    @GetMapping("/randomTag")
+    public 
 }

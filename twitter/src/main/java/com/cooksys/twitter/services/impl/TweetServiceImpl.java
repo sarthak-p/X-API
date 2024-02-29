@@ -49,7 +49,6 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return tagsInContent;
 	}
-	
 
 	// processes content for user mentions
 	private List<User> processTweetForUsers(String tweetContent) {
@@ -64,19 +63,19 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return usersInContent;
 	}
-	
-	private void validateTweet(TweetRequestDto tweetRequestDto){
-        CredentialsDto credentialsDtoToCreate = tweetRequestDto.getCredentials();
-        String contentToCreate = tweetRequestDto.getContent();
-        if (credentialsDtoToCreate == null || contentToCreate == null){
-            throw new BadRequestException("Content or Credentials cannot be null");
-        } else if (!validateService.usernameExists(credentialsDtoToCreate.getUsername())) {
-            throw new BadRequestException("User doesn't exist in the database");
-        } else if(credentialsDtoToCreate.getUsername() == null || credentialsDtoToCreate.getPassword() == null){
-            throw new BadRequestException("Username or password cannot be null");
-        }
-    }
-	
+
+	private void validateTweet(TweetRequestDto tweetRequestDto) {
+		CredentialsDto credentialsDtoToCreate = tweetRequestDto.getCredentials();
+		String contentToCreate = tweetRequestDto.getContent();
+		if (credentialsDtoToCreate == null || contentToCreate == null) {
+			throw new BadRequestException("Content or Credentials cannot be null");
+		} else if (!validateService.usernameExists(credentialsDtoToCreate.getUsername())) {
+			throw new BadRequestException("User doesn't exist in the database");
+		} else if (credentialsDtoToCreate.getUsername() == null || credentialsDtoToCreate.getPassword() == null) {
+			throw new BadRequestException("Username or password cannot be null");
+		}
+	}
+
 	private Tweet getTweet(Long id) {
 		Optional<Tweet> tweetById = tweetRepository.findByIdAndDeletedFalse(id);
 		if (!tweetById.isPresent()) {
@@ -86,10 +85,10 @@ public class TweetServiceImpl implements TweetService {
 		}
 		return tweetById.get();
 	}
-	
+
 	// GET
-	//----------
-	
+	// ----------
+
 	@Override
 	public List<TweetResponseDto> getAllTweets() {
 		List<TweetResponseDto> allTweets = tweetMapper.entitiesToResponseDtos(tweetRepository.findAllByDeletedFalse());
@@ -99,14 +98,14 @@ public class TweetServiceImpl implements TweetService {
 		allTweets.sort(Comparator.comparing(TweetResponseDto::getPosted).reversed());
 		return allTweets;
 	}
-	
+
 	@Override
 	public TweetResponseDto getTweetById(Long id) {
 		return tweetMapper.entityToResponseDto(getTweet(id));
 	}
-	
+
 	// POST
-	//----------
+	// ----------
 	@Override
 	public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
 		validateTweet(tweetRequestDto);

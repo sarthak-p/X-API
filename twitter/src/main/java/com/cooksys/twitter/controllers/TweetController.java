@@ -23,16 +23,14 @@ public class TweetController {
     private final TweetService tweetService;
 
     @GetMapping
-    public List<TweetResponseDto> getAllTweets(){
+    public List<TweetResponseDto> getAllTweets() {
         return tweetService.getAllTweets();
     }
-    
+
     @GetMapping("/{id}")
-    public TweetResponseDto getTweetById(@PathVariable Long id){
+    public TweetResponseDto getTweetById(@PathVariable Long id) {
         return tweetService.getTweetById(id);
     }
-    
-    
 
     @PostMapping
     public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {

@@ -66,7 +66,8 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
         for (User user : userRepository.findAll()) {
             if (user.getCredentials().getUsername().equals(userRequestDto.getCredentials().getUsername()) &&
-                    user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword()) && user.isDeleted()) {
+                    user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword())
+                    && user.isDeleted()) {
                 user.setDeleted(false);
                 return userMapper.entityToResponseDto(userRepository.saveAndFlush(user));
             }

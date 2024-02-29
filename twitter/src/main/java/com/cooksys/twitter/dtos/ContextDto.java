@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ContextDto {
-	private TweetResponseDto target;
+  private TweetResponseDto target;
 
   private List<TweetResponseDto> before;
 

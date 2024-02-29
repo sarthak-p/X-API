@@ -9,8 +9,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface HashtagMapper {
     HashtagDto entityToDto(Hashtag hashtag);
-
     List<HashtagDto> entitiesToDtos(List<Hashtag> hashtags);
-
-    // Hashtag dtoToEntity(HashtagDto dto);
 }
