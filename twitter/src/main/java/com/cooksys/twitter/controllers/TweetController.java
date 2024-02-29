@@ -43,6 +43,11 @@ public class TweetController {
     	tweetService.createLike(credentialsDto, id);
     }
     
+    @PostMapping("/{id}/reply")
+    public TweetResponseDto createReplyTweet(@RequestBody TweetRequestDto tweetRequestDto, @PathVariable Long id) {
+    	return tweetService.createReplyTweet(tweetRequestDto, id);
+    }
+    
     @DeleteMapping("/{id}")
     public TweetResponseDto deleteTweet(@RequestBody CredentialsDto credentialsDto, @PathVariable Long id) {
     	return tweetService.deleteTweet(credentialsDto, id);

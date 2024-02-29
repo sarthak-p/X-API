@@ -130,17 +130,41 @@ public class TweetServiceImpl implements TweetService {
 		Tweet tweetToLike = getTweet(id);
 		// check if credentials don't match author
 		if (userRepository.findByCredentials_Username(credentialsDto.getUsername()).get() == null) {
-			throw new BadRequestException("Tweet author doesn't match credentials");
+			throw new BadRequestException("User doesn't exist in the database");
 		}
 		// create like relationship between user and tweet
 		User userToLikeTweet = userRepository.findByCredentials_Username(credentialsDto.getUsername()).get();
 		userToLikeTweet.getLikedTweets().add(tweetToLike);
 		tweetToLike.getUser_likes().add(userToLikeTweet);
-		
+
 		// save to database
 		userRepository.saveAndFlush(userToLikeTweet);
 		tweetRepository.saveAndFlush(tweetToLike);
 
+	}
+
+	@Override
+	public TweetResponseDto createReplyTweet(TweetRequestDto tweetRequestDto, Long id) {
+		// if tweet is deleted or doesn't exist or credentials don't match user in db
+		Tweet tweetToReplyTo = getTweet(id);
+		if (userRepository.findByCredentials_Username(tweetRequestDto.getCredentials().getUsername()).get() == null) {
+			throw new BadRequestException("User doesn't exist in the database");
+		}
+		// create reply tweet
+		Tweet replyTweet = new Tweet();
+		replyTweet.setDeleted(false);
+		replyTweet.setContent(tweetRequestDto.getContent());
+		replyTweet.setAuthor(
+				userRepository.findByCredentials_Username(tweetRequestDto.getCredentials().getUsername()).get());
+		// process content for @{username} mentions and #{hashtag} tags
+		replyTweet.setHashtags(processTweetForTags(replyTweet.getContent()));
+		replyTweet.setMentionedUsers(processTweetForUsers(replyTweet.getContent()));
+		// add reply to relationship
+		replyTweet.setInReplyTo(tweetToReplyTo);
+		tweetToReplyTo.getReplies().add(replyTweet);
+		// save to database
+		tweetRepository.saveAndFlush(tweetToReplyTo);
+		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(replyTweet));
 	}
 
 	// DELETE
