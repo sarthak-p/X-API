@@ -40,6 +40,12 @@ public class UserServiceImpl implements UserService {
         if (credentialsDtoToCreate == null || profileDtoToCreate == null) {
             throw new BadRequestException("Profile or Credentials cannot be null");
         } else if (validateService.usernameExists(credentialsDtoToCreate.getUsername())) {
+            for(User user: userRepository.findAll()){
+                if (user.getCredentials().getUsername().equals(userRequestDto.getCredentials().getUsername()) &&
+                        user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword()) && user.isDeleted()) {
+                    return;
+                }
+            }
             throw new BadRequestException("Username already taken");
         } else if (profileDtoToCreate.getEmail() == null) {
             throw new BadRequestException("Email cannot be null");
@@ -64,6 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
+
+        validateUser(userRequestDto);
+
         for (User user : userRepository.findAll()) {
             if (user.getCredentials().getUsername().equals(userRequestDto.getCredentials().getUsername()) &&
                     user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword())
@@ -72,7 +81,7 @@ public class UserServiceImpl implements UserService {
                 return userMapper.entityToResponseDto(userRepository.saveAndFlush(user));
             }
         }
-        validateUser(userRequestDto);
+
         User userToCreate = new User();
         userToCreate.setCredentials(credentialsMapper.dtoToEntity(userRequestDto.getCredentials()));
         userToCreate.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
