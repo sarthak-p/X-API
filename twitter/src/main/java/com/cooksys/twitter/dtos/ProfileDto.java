@@ -1,7 +1,6 @@
 package com.cooksys.twitter.dtos;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
