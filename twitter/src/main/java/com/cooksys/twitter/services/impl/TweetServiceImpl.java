@@ -123,4 +123,20 @@ public class TweetServiceImpl implements TweetService {
 
 		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(createdTweet));
 	}
+
+	// DELETE
+	// --------
+	@Override
+	public TweetResponseDto deleteTweet(CredentialsDto credentialsDto, Long id) {
+		// check if no tweet exists
+		Tweet tweetToDelete = getTweet(id);
+		// check if credentials don't match author
+		if (!tweetToDelete.getAuthor()
+				.equals(userRepository.findByCredentials_Username(credentialsDto.getUsername()).get())) {
+			throw new BadRequestException("Tweet author doesn't match credentials");
+		}
+		// delete tweet
+		tweetToDelete.setDeleted(true);
+		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(tweetToDelete));
+	}
 }
