@@ -6,6 +6,7 @@ import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
+import com.cooksys.twitter.dtos.UserResponseDto;
 
 public interface TweetService {
     List<TweetResponseDto> getAllTweets();
@@ -23,4 +24,6 @@ public interface TweetService {
 	TweetResponseDto createRepostTweet(CredentialsDto credentialsDto, Long id);
 
 	List<HashtagDto> getTagsByTweetId(Long id);
+
+	List<UserResponseDto> getUserLikesByTweetId(Long id);
 }

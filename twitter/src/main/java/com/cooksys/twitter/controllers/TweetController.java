@@ -14,6 +14,7 @@ import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
+import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.services.TweetService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,11 @@ public class TweetController {
     @GetMapping("/{id}/tags")
     public List<HashtagDto> getTagsByTweetId(@PathVariable Long id) {
     	return tweetService.getTagsByTweetId(id);
+    }
+    
+    @GetMapping("/{id}/likes")
+    public List<UserResponseDto> getUserLikesByTweetId(@PathVariable Long id) {
+    	return tweetService.getUserLikesByTweetId(id);
     }
 
     @PostMapping

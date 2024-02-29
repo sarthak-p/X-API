@@ -13,6 +13,7 @@ import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
 import com.cooksys.twitter.dtos.TweetResponseDto;
+import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.entities.Hashtag;
 import com.cooksys.twitter.entities.Tweet;
 import com.cooksys.twitter.entities.User;
@@ -20,6 +21,7 @@ import com.cooksys.twitter.exceptions.BadRequestException;
 import com.cooksys.twitter.exceptions.NotFoundException;
 import com.cooksys.twitter.mappers.HashtagMapper;
 import com.cooksys.twitter.mappers.TweetMapper;
+import com.cooksys.twitter.mappers.UserMapper;
 import com.cooksys.twitter.repositories.HashtagRepository;
 import com.cooksys.twitter.repositories.TweetRepository;
 import com.cooksys.twitter.repositories.UserRepository;
@@ -36,6 +38,7 @@ public class TweetServiceImpl implements TweetService {
 	private final HashtagRepository hashtagRepository;
 	private final TweetMapper tweetMapper;
 	private final HashtagMapper hashtagMapper;
+	private final UserMapper userMapper;
 	private ValidateService validateService;
 
 	// processes content for hashtags
@@ -106,12 +109,26 @@ public class TweetServiceImpl implements TweetService {
 	public TweetResponseDto getTweetById(Long id) {
 		return tweetMapper.entityToResponseDto(getTweet(id));
 	}
-	
+
 	@Override
 	public List<HashtagDto> getTagsByTweetId(Long id) {
 		// check if the tweet exists and if it's deleted
 		Tweet tweet = getTweet(id);
 		return hashtagMapper.entitiesToDtos(tweet.getHashtags());
+	}
+
+	@Override
+	public List<UserResponseDto> getUserLikesByTweetId(Long id) {
+		// check if the tweet exists and if it's deleted
+		Tweet tweet = getTweet(id);
+		// only return non-deleted users
+		List<User> nonDeletedUsers = new ArrayList<>();
+		for (User u : tweet.getUser_likes()) {
+			if (!u.isDeleted()) {
+				nonDeletedUsers.add(u);
+			}
+		}
+		return userMapper.entitiesToResponseDtos(nonDeletedUsers);
 	}
 
 	// POST
