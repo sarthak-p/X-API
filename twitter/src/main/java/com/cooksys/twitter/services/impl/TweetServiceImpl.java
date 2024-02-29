@@ -124,6 +124,25 @@ public class TweetServiceImpl implements TweetService {
 		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(createdTweet));
 	}
 
+	@Override
+	public void createLike(CredentialsDto credentialsDto, Long id) {
+		// checks if tweet exists and if it's deleted
+		Tweet tweetToLike = getTweet(id);
+		// check if credentials don't match author
+		if (userRepository.findByCredentials_Username(credentialsDto.getUsername()).get() == null) {
+			throw new BadRequestException("Tweet author doesn't match credentials");
+		}
+		// create like relationship between user and tweet
+		User userToLikeTweet = userRepository.findByCredentials_Username(credentialsDto.getUsername()).get();
+		userToLikeTweet.getLikedTweets().add(tweetToLike);
+		tweetToLike.getUser_likes().add(userToLikeTweet);
+		
+		// save to database
+		userRepository.saveAndFlush(userToLikeTweet);
+		tweetRepository.saveAndFlush(tweetToLike);
+
+	}
+
 	// DELETE
 	// --------
 	@Override
