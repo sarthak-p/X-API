@@ -34,16 +34,16 @@ public class UserServiceImpl implements UserService {
     private ProfileMapper profileMapper;
     private CredentialsMapper credentialsMapper;
 
-    private void validateUser(UserRequestDto userRequestDto){
+    private void validateUser(UserRequestDto userRequestDto) {
         CredentialsDto credentialsDtoToCreate = userRequestDto.getCredentials();
         ProfileDto profileDtoToCreate = userRequestDto.getProfile();
-        if (credentialsDtoToCreate == null || profileDtoToCreate == null){
+        if (credentialsDtoToCreate == null || profileDtoToCreate == null) {
             throw new BadRequestException("Profile or Credentials cannot be null");
         } else if (validateService.usernameExists(credentialsDtoToCreate.getUsername())) {
             throw new BadRequestException("Username already taken");
-        } else if (profileDtoToCreate.getEmail() == null){
+        } else if (profileDtoToCreate.getEmail() == null) {
             throw new BadRequestException("Email cannot be null");
-        } else if(credentialsDtoToCreate.getUsername() == null || credentialsDtoToCreate.getPassword() == null){
+        } else if (credentialsDtoToCreate.getUsername() == null || credentialsDtoToCreate.getPassword() == null) {
             throw new BadRequestException("Username or password cannot be null");
         }
     }
@@ -64,14 +64,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        validateUser(userRequestDto);
         for (User user : userRepository.findAll()) {
             if (user.getCredentials().getUsername().equals(userRequestDto.getCredentials().getUsername()) &&
-                    user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword())) {
+                    user.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword()) && user.isDeleted()) {
                 user.setDeleted(false);
                 return userMapper.entityToResponseDto(userRepository.saveAndFlush(user));
             }
         }
+        validateUser(userRequestDto);
         User userToCreate = new User();
         userToCreate.setCredentials(credentialsMapper.dtoToEntity(userRequestDto.getCredentials()));
         userToCreate.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
@@ -83,11 +83,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByCredentials_Username(username);
-        if(!validateService.usernameExists(username) || optionalUser.get().isDeleted()){
+        if (!validateService.usernameExists(username) || optionalUser.get().isDeleted()) {
             throw new NotFoundException("Username not found");
         }
         System.out.println(optionalUser.get().getJoined());
         return userMapper.entityToResponseDto(optionalUser.get());
+    }
+
+    @Override
+    public UserResponseDto deleteUser(String username, CredentialsDto credentialsDto) {
+        if (!validateService.usernameExists(username) || !credentialsDto.getUsername().equals(username)) {
+            throw new BadRequestException("Username does not exist");
+        }
+        Optional<User> optionalUser = userRepository.findByCredentials_Username(username);
+        User userToDelete = optionalUser.get();
+        userToDelete.setDeleted(true);
+        return userMapper.entityToResponseDto(userRepository.saveAndFlush(userToDelete));
     }
 
 }
