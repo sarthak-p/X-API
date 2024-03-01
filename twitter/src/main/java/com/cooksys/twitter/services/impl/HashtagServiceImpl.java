@@ -29,7 +29,6 @@ public class HashtagServiceImpl implements HashtagService {
     @Override
     public List<HashtagDto> getAllHashtags() {
         List<Hashtag> hashtags = hashtagRepository.findAll();
-        System.out.println("Fetched hashtags: " + hashtags); // Debugging purpose
         return hashtagMapper.entitiesToDtos(hashtags);
     }
 
