@@ -2,6 +2,7 @@ package com.cooksys.twitter.controllers;
 
 
 import com.cooksys.twitter.dtos.CredentialsDto;
+import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.dtos.UserRequestDto;
 import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.repositories.UserRepository;
@@ -58,5 +59,10 @@ public class UserController {
     @PostMapping("@{username}/unfollow")
     public void unfollowUser(@PathVariable String username, @RequestBody CredentialsDto credentialsDto){
         userService.unfollowUser(username, credentialsDto);
+    }
+
+    @GetMapping("/@{username}/tweets")
+    public List<TweetResponseDto> getTweets(@PathVariable String username){
+        return userService.getTweets(username);
     }
 }
