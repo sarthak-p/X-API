@@ -215,7 +215,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<TweetResponseDto> getTweets(String username) {
+    public List<TweetResponseDto> getUserTweets(String username) {
         if(!validateService.usernameExists(username) || userRepository.findByCredentials_Username(username).get().isDeleted()){
             throw new BadRequestException("No user with that name exist");
         }
