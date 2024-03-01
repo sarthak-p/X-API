@@ -51,8 +51,10 @@ public class Tweet {
         @ManyToMany
         @JoinTable(name = "tweet_user_likes", joinColumns = @JoinColumn(name = "tweet_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> user_likes = new ArrayList<>();
-
-        @ManyToMany(mappedBy = "mentionedInTweets")
+        
+        
+        @ManyToMany(cascade = CascadeType.PERSIST)
+        @JoinTable(name = "tweet_user_mentions", joinColumns = @JoinColumn(name = "tweet_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> mentionedUsers = new ArrayList<>();
 
         @ManyToMany

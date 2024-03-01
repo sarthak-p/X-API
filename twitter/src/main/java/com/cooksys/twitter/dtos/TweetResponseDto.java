@@ -1,9 +1,10 @@
 package com.cooksys.twitter.dtos;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Data
@@ -20,4 +21,6 @@ public class TweetResponseDto {
     private TweetResponseDto inReplyToId;
 
     private TweetResponseDto repostOfId;
+    
+    private List<UserResponseDto> mentionedUsers;
 }

@@ -54,6 +54,11 @@ public class TweetController {
     public List<TweetResponseDto> getRepostsByTweetId(@PathVariable Long id) {
     	return tweetService.getRepostsByTweetId(id);
     }
+    
+    @GetMapping("/{id}/mentions")
+    public List<UserResponseDto> getMentionsByTweetId(@PathVariable Long id) {
+    	return tweetService.getMentionsByTweetId(id);
+    }
 
     @PostMapping
     public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {

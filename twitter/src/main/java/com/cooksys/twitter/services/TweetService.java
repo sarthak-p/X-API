@@ -30,4 +30,6 @@ public interface TweetService {
 	List<TweetResponseDto> getRepliesByTweetId(Long id);
 
 	List<TweetResponseDto> getRepostsByTweetId(Long id);
+
+	List<UserResponseDto> getMentionsByTweetId(Long id);
 }

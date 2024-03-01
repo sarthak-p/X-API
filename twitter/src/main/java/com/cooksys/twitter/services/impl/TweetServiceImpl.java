@@ -163,6 +163,19 @@ public class TweetServiceImpl implements TweetService {
 		return tweetMapper.entitiesToResponseDtos(nonDeletedReposts);
 	}
 
+	@Override
+	public List<UserResponseDto> getMentionsByTweetId(Long id) {
+		// check if the tweet exists and if it's deleted
+		Tweet tweet = getTweet(id);
+		List<User> nonDeletedUsers = new ArrayList<>();
+		for (User u : tweet.getMentionedUsers()) {
+			if (!u.isDeleted()) {
+				nonDeletedUsers.add(u);
+			}
+		}
+		return userMapper.entitiesToResponseDtos(nonDeletedUsers);
+	}
+
 	// POST
 	// ----------
 	@Override
@@ -179,8 +192,9 @@ public class TweetServiceImpl implements TweetService {
 		// process content for @{username} mentions and #{hashtag} tags
 		createdTweet.setHashtags(processTweetForTags(createdTweet.getContent()));
 		createdTweet.setMentionedUsers(processTweetForUsers(createdTweet.getContent()));
-
-		return tweetMapper.entityToResponseDto(tweetRepository.saveAndFlush(createdTweet));
+		tweetRepository.saveAndFlush(createdTweet);
+		TweetResponseDto t = tweetMapper.entityToResponseDto(createdTweet);
+		return t;
 	}
 
 	@Override
