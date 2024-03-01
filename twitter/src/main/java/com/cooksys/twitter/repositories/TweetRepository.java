@@ -12,10 +12,14 @@ import com.cooksys.twitter.entities.Tweet;
 
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
-    Optional<Tweet> findById(Long id);
+	Optional<Tweet> findById(Long id);
 
-    List<Tweet> findAllByDeletedFalse();
+	List<Tweet> findAllByDeletedFalse();
 
-    Optional<Tweet> findByIdAndDeletedFalse(Long id);
-    List<Tweet> findAllByDeletedFalseAndAuthor(User user);
+	Optional<Tweet> findByIdAndDeletedFalse(Long id);
+
+	List<Tweet> findAllByDeletedFalseAndAuthor(User user);
+	
+	List<Tweet> findAllByDeletedFalseAndHashtags_Label(String label);
+
 }
