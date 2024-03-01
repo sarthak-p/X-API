@@ -2,6 +2,7 @@ package com.cooksys.twitter.services;
 
 import java.util.List;
 
+import com.cooksys.twitter.dtos.ContextDto;
 import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
@@ -32,4 +33,6 @@ public interface TweetService {
 	List<TweetResponseDto> getRepostsByTweetId(Long id);
 
 	List<UserResponseDto> getMentionsByTweetId(Long id);
+
+	ContextDto getTweetContext(Long id);
 }

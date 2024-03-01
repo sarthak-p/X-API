@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
+import com.cooksys.twitter.dtos.ContextDto;
 import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
@@ -174,6 +175,33 @@ public class TweetServiceImpl implements TweetService {
 			}
 		}
 		return userMapper.entitiesToResponseDtos(nonDeletedUsers);
+	}
+
+	@Override
+	public ContextDto getTweetContext(Long id) {
+		// get tweet and validate it
+		Tweet tweet = getTweet(id);
+		ContextDto context = new ContextDto();
+		context.setTarget(tweetMapper.entityToResponseDto(tweet));
+		List<Tweet> beforeReplies = new ArrayList<>();
+		List<Tweet> afterReplies = new ArrayList<>();
+		Tweet currentTweet = tweet.getInReplyTo();
+		// before
+		while (currentTweet != null) {
+			if (!currentTweet.isDeleted()) {
+				beforeReplies.add(currentTweet);
+				currentTweet = currentTweet.getInReplyTo();
+			}
+		}
+		// after
+		for (Tweet t : tweet.getReplies()) {
+			if (!t.isDeleted()) {
+				afterReplies.add(t);
+			}
+		}
+		context.setBefore(tweetMapper.entitiesToResponseDtos(beforeReplies));
+		context.setAfter(tweetMapper.entitiesToResponseDtos(afterReplies));
+		return context;
 	}
 
 	// POST

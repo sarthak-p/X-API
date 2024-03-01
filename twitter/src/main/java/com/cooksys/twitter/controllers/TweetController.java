@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cooksys.twitter.dtos.ContextDto;
 import com.cooksys.twitter.dtos.CredentialsDto;
 import com.cooksys.twitter.dtos.HashtagDto;
 import com.cooksys.twitter.dtos.TweetRequestDto;
@@ -58,6 +59,11 @@ public class TweetController {
     @GetMapping("/{id}/mentions")
     public List<UserResponseDto> getMentionsByTweetId(@PathVariable Long id) {
     	return tweetService.getMentionsByTweetId(id);
+    }
+    
+    @GetMapping("/{id}/context")
+    public ContextDto getTweetContext(@PathVariable Long id) {
+    	return tweetService.getTweetContext(id);
     }
 
     @PostMapping
