@@ -18,9 +18,9 @@ public class TweetResponseDto {
 
     private String content;
 
-    private TweetResponseDto inReplyToId;
+    private TweetResponseDto inReplyTo;
 
-    private TweetResponseDto repostOfId;
+    private TweetResponseDto repostOf;
     
     private List<UserResponseDto> mentionedUsers;
 }

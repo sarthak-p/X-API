@@ -158,9 +158,9 @@ public class TweetServiceImpl implements TweetService {
 			}
 		}
 		// set content of repost to tweet they retweeted
-		for (Tweet repost : nonDeletedReposts) {
-			repost.setContent(tweet.getContent());
-		}
+//		for (Tweet repost : nonDeletedReposts) {
+//			repost.setContent(tweet.getContent());
+//		}
 		return tweetMapper.entitiesToResponseDtos(nonDeletedReposts);
 	}
 
