@@ -1,6 +1,7 @@
 package com.cooksys.twitter.services;
 
 import com.cooksys.twitter.dtos.CredentialsDto;
+import com.cooksys.twitter.dtos.TweetResponseDto;
 import com.cooksys.twitter.dtos.UserRequestDto;
 import com.cooksys.twitter.dtos.UserResponseDto;
 import com.cooksys.twitter.entities.User;
@@ -27,4 +28,7 @@ public interface UserService {
     List<UserResponseDto> getFollowing(String username);
 
     void unfollowUser(String username, CredentialsDto credentialsDto);
+
+
+    List<TweetResponseDto> getTweets(String username);
 }
