@@ -48,11 +48,14 @@ public class Tweet {
         @OneToMany(mappedBy = "repostOf")
         private List<Tweet> reposts = new ArrayList<>();
 
+        @Column(nullable = false, updatable = false)
+        @CreationTimestamp
+        private LocalDateTime createdTimestamp;
+
         @ManyToMany
         @JoinTable(name = "tweet_user_likes", joinColumns = @JoinColumn(name = "tweet_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> user_likes = new ArrayList<>();
-        
-        
+
         @ManyToMany(cascade = CascadeType.PERSIST)
         @JoinTable(name = "tweet_user_mentions", joinColumns = @JoinColumn(name = "tweet_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> mentionedUsers = new ArrayList<>();
