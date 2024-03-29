@@ -577,6 +577,7 @@ Ensure you have the following installed:
 3. **Build and run the application:**
 
 ```bash
+  mvn clean install
   mvn spring-boot:run
 ```
 
