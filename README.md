@@ -1,4 +1,4 @@
-Assessment 1
+<!--- Assessment 1
 ===============================
 
 ## Overview
@@ -521,4 +521,72 @@ Deleted users should be excluded from the response.
 #### Response
 ```javascript
 ['User']
+``` --->
+
+# 𝕏 API
+
+## Overview
+
+𝕏 API is a RESTful API resembling 𝕏's basic functionalities using Spring Boot, JPA, and PostgreSQL. It focuses on features such as posting tweets, user management, following functionality, and more. This API is built from scratch to develop a clear data model, creating a suitable database schema, and writing Spring services and controllers for robust data handling.
+
+![Spring Assessment ERD](https://user-images.githubusercontent.com/12191780/187276918-ccb2d373-be3b-42ff-a74d-5560ba806a10.png)
+
+## Features
+
+- **User Management**: Create, update, and manage user profiles, including handling of credentials and personal information.
+- **Tweet Operations**: Post, repost, reply to, and delete tweets, along with the ability to like tweets and manage tweet visibility.
+- **Following System**: A following system allowing users to follow and unfollow others, similar to 𝕏's model.
+- **Hashtag Functionality**: Support for hashtags, enabling tweets to be tagged and searched by specific topics or interests.
+- **Security**: Uses Spring Security for authentication and authorization, ensuring safe user interactions within the platform.
+- **Efficient Data Handling**: Leverage JPA and PostgreSQL for optimized data storage, retrieval, and manipulation, ensuring high performance and scalability.
+
+## Built With
+
+- **Spring Boot**: For creating the RESTful API with ease and efficiency.
+- **PostgreSQL**: As the relational database for storing and managing application data.
+- **Java Persistence API (JPA)**: For ORM and database interaction.
+- **Spring Security**: For implementing robust authentication and authorization.
+- **Git**: For version control.
+- **JUnit**: For testing the application.
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- JDK 11 or newer
+- Maven
+- PostgreSQL
+- Git
+- Newman (for API testing)
+
+### Setup & Installation
+
+1. **Clone the repository:**
+
+```bash
+  git clone https://github.com/sarthak-p/X-API
 ```
+
+2. **Navigate to the project directory:**
+
+```bash
+  cd X-API
+```
+
+3. **Build and run the application:**
+
+```bash
+  mvn spring-boot:run
+```
+
+4. The application should now be running and accessible. You can begin interacting with the API through the defined endpoints.
+
+## Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+## License
+
+This project is licensed under the MIT License.
+
